@@ -1,4 +1,4 @@
-# Goal: To install docker, build the image for devboard frontend and push to the docker hub
+# Goal: To install docker, build the image for devboard frontend and push to the docker hub, after linting the code
 name: CI
 
 on:
@@ -6,7 +6,28 @@ on:
     branches: [test]
 
 jobs:
+  code-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12' # Specify your project's Node version
+
+      - name: Install Dependencies
+        run: npm ci          # Clean install that strictly enforces package-lock.json
+
+      - name: Run linter
+        uses: wearerequired/lint-action@v2
+        with:
+          eslint: true
+          prettier: true
+          
   build-and-push:
+    needs: [code-lint]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
