@@ -16,7 +16,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20' # Specify your project's Node version
-          cache: 'npm'       # Automatically caches dependencies for faster execution
+          cache: 'yarn'      # Automatically caches dependencies for faster execution
 
       - name: Install Dependencies
         run: npm ci          # Clean install that strictly enforces package-lock.json
